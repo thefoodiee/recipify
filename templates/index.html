@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipify</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel = "icon" href = "{{ url_for('static', filename='recipify-removebg-preview.ico') }}" type = "image/x-icon">
+
+    <!-- Custom styles added here -->
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .jumbotron {
+            background-image: url('your-background-image.jpg');
+            background-size: cover;
+            color: #ffffff;
+            text-align: center;
+            padding: 150px 0;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+        border-radius: 10px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #007bff;
+        }
+
+        /* Add more custom styles as needed */
+        
+    </style>
+</head>
+
+
+<body class="container mt-5" style="background-color: #ADD8E6;">
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="mb-4">Recipify</h1>
+
+            <form method="POST" class="mb-4">
+                <div class="form-group">
+                    <label for="ingredients">Enter ingredients (comma-separated):</label>
+                    <input type="text" class="form-control" id="ingredients" name="ingredients" required>
+                </div>
+                <div class="form-group">
+                    <label for="num_recipes">Number of recipes:</label>
+                    <input type="number" class="form-control" id="num_recipes" name="num_recipes" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </form>
+
+
+            {% if recipe %}
+    <div class="card">
+        <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.label }}">
+        <div class="card-body">
+            <h2 class="card-title">{{ recipe.label }}</h2>
+            <p class="card-text"><strong>Ingredients:</strong></p>
+            <ul class="list-group list-group-flush">
+                {% for ingredient in recipe.ingredients %}
+                    <li class="list-group-item">{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ recipe.url }}" class="btn btn-primary mt-3" target="_blank">See full recipe</a>
+            <br>
+            <br>
+            <p><strong>Nutrition Information:</strong></p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Calories: {{ recipe.nutrition_info.ENERC_KCAL }} kcal</li>
+                <li class="list-group-item">Fat: {{ recipe.nutrition_info.FAT }} g</li>
+                <li class="list-group-item">Sugar: {{ recipe.nutrition_info.SUGAR }} g</li>
+                <li class="list-group-item">Carbohydrates: {{ recipe.nutrition_info.CHOCDF }} g</li>
+                <li class="list-group-item">Protein: {{ recipe.nutrition_info.PROCNT }} g</li>
+            </ul>
+            <br>
+            {% if show_another_button %}
+        <a href="{{ url_for('another_recipe') }}" class="btn btn-success mt-3">Give Another Recipe</a>
+    {% endif %}
+    <br>
+    <br>
+        </div>
+    </div>
+    
+{% elif error %}
+    <div class="alert alert-danger mt-3" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+
+<!-- ... (other HTML code) ... -->
+
+
+        </div>
+    </div>
+</body>
+</html>
